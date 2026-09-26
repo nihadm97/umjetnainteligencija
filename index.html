@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="bs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jetson Nano - naredbe i vježbe</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232b6cb0'/%3E%3Cpath d='M17 18h30v28H17z' fill='none' stroke='white' stroke-width='4'/%3E%3Cpath d='M25 28h14M25 36h10' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root {
+--page: #120c1a;
+--paper: #1c2028;
+--ink: #f1f4f7;
+--muted: #b4bdc9;
+--line: #3e4653;
+--blue: #76b900;
+--blue-soft: #253719;
+--code: #10151c;
+--green: #9add1d;
+}
+* { box-sizing: border-box; }
+body {
+margin: 0;
+background-color: #0d0914;
+background-image:
+linear-gradient(rgba(12, 8, 19, .3), rgba(12, 8, 19, .36)),
+url('jetson-lightning-background.png');
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+color: var(--ink);
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+font-size: 16px;
+line-height: 1.55;
+}
+.notebook {
+width: min(1050px, calc(100% - 32px));
+margin: 32px auto;
+background: rgba(28, 32, 40, .91);
+border: 1px solid var(--line);
+box-shadow: 0 16px 42px rgba(0, 0, 0, .38);
+}
+header {
+padding: 34px 42px 26px;
+border-bottom: 1px solid var(--line);
+background: linear-gradient(108deg, rgba(9, 14, 18, .88), rgba(53, 33, 70, .74));
+}
+h1, h2, h3, p { margin-top: 0; }
+h1 { margin-bottom: 6px; font-size: clamp(1.65rem, 4vw, 2.25rem); letter-spacing: -.03em; }
+h2 { margin: 0 0 12px; font-size: 1.3rem; letter-spacing: -.015em; }
+h3 { margin: 30px 0 12px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 1.08rem; }
+.subtitle { margin: 0; color: var(--muted); }
+.hint {
+margin-top: 20px;
+padding: 11px 14px;
+border-left: 4px solid var(--blue);
+background: var(--blue-soft);
+color: #d8f4a4;
+}
+.section { padding: 30px 42px; border-bottom: 1px solid var(--line); }
+.section:last-child { border-bottom: 0; }
+.section-intro { color: var(--muted); margin-bottom: 20px; }
+.cell { margin: 17px 0 24px; }
+.cell-head {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 16px;
+margin-bottom: 7px;
+}
+.cell-title { margin: 0; font-size: 1rem; font-weight: 700; }
+.copy {
+border: 1px solid #bad0e9;
+background: #202a18;
+color: #d8f4a4;
+border-radius: 6px;
+padding: 6px 10px;
+font: inherit;
+font-size: .86rem;
+font-weight: 600;
+cursor: pointer;
+white-space: nowrap;
+}
+.copy:hover, .copy:focus-visible { background: #354c20; outline: 2px solid transparent; }
+.code-wrap {
+display: grid;
+grid-template-columns: minmax(0, 1fr);
+border: 1px solid #46505c;
+border-radius: 7px;
+overflow: hidden;
+background: var(--code);
+}
+.prompt { display: none; }
+pre {
+margin: 0;
+padding: 14px 16px;
+overflow-x: auto;
+font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+font-size: .9rem;
+line-height: 1.55;
+white-space: pre-wrap;
+overflow-wrap: anywhere;
+}
+code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+.note {
+margin: 0;
+padding: 10px 13px;
+border: 1px solid #414955;
+border-radius: 6px;
+background: #232933;
+color: #d4dbe5;
+font-size: .94rem;
+}
+.key {
+display: inline-block;
+padding: 1px 6px;
+border: 1px solid #717b89;
+border-bottom-width: 2px;
+border-radius: 4px;
+background: #292f38;
+font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+font-size: .9em;
+}
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; }
+.status { color: var(--green); font-size: .85rem; min-height: 1.25em; }
+footer { padding: 18px 42px; color: var(--muted); font-size: .9rem; }
+@media (max-width: 700px) {
+.notebook { width: 100%; margin: 0; border-left: 0; border-right: 0; }
+header, .section, footer { padding-left: 20px; padding-right: 20px; }
+.grid { grid-template-columns: 1fr; }
+.code-wrap { grid-template-columns: minmax(0, 1fr); }
+pre { padding-left: 12px; padding-right: 12px; font-size: .82rem; }
+}
+</style>
+</head>
+<body>
+<main class="notebook">
+<header>
+<h1>Jetson Nano - naredbe i vježbe</h1>
+<p class="subtitle">Kamera, Edge Impulse, USB mikrofon, zvučnik, LLM i LED program.</p>
+<p class="hint">Svaka zelena kartica je terminalska komanda. Klikni <strong>Kopiraj</strong>, zalijepi u terminal i pritisni Enter.</p>
+</header>
+
+<section class="section">
+<h2>0 Osnovno</h2>
+<p class="section-intro">Ove tipke rade u terminalu i u programima koji rade neprekidno.</p>
+<p class="note"><strong>0.1 Prekini komandu:</strong> <span class="key">Ctrl</span> + <span class="key">C</span> prekida aktivnu komandu.</p>
+</section>
+
+<section class="section">
+<h2>1 Edge Impulse - kamera</h2>
+<p class="section-intro">Prvo poveži CSI kameru s Edge Impulse projektom za prikupljanje slika. Zatim je po potrebi provjeri lokalno.</p>
+<div class="cell">
+<div class="cell-head"><p class="cell-title">1.0 Pokreni prikupljanje podataka s kamerom</p><button class="copy" data-copy="NODE_OPTIONS=&quot;--require=$HOME/.ei-structured-clone.js&quot; edge-impulse-linux --disable-microphone --clean --verbose">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">Komanda</div><pre><code>NODE_OPTIONS=&quot;--require=$HOME/.ei-structured-clone.js&quot; \
+edge-impulse-linux --disable-microphone --clean --verbose</code></pre></div>
+</div>
+<div class="cell">
+<div class="cell-head"><p class="cell-title">1.1 Provjeri CSI kameru</p><button class="copy" data-copy="nvgstcapture-1.0 --sensor-id=0">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">Komanda</div><pre><code>nvgstcapture-1.0 --sensor-id=0</code></pre></div>
+<p class="note">Pokreće kameru spojenu na CSI konektor. Ako ne reaguje, zatvori sve druge programe koji je koriste.</p>
+</div>
+<div class="cell">
+<div class="cell-head"><p class="cell-title">1.2 Izađi iz kamere</p><button class="copy" data-copy="q">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">Komanda</div><pre><code>q</code></pre></div>
+<p class="note">Dok je prozor kamere aktivan, pritisni <span class="key">q</span> za izlaz.</p>
+</div>
+<div class="cell">
+<div class="cell-head"><p class="cell-title">1.3 Restart servisa za kameru</p><button class="copy" data-copy="sudo systemctl restart nvargus-daemon">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">Komanda</div><pre><code>sudo systemctl restart nvargus-daemon</code></pre></div>
+<p class="note">Koristi samo kada CSI kamera javlja grešku ili se ne može otvoriti.</p>
+</div>
+</section>
+
+<section class="section">
+<h2>2 Edge Impulse - accelerometer</h2>
+<p class="section-intro">Prije pokretanja provjeri da su ADS1115 i ADXL335 fizički povezani žicama kao na shemi.</p>
+<div class="cell">
+<div class="cell-head"><p class="cell-title">2.0 Provjera ADS1115 preko I2C</p><button class="copy" data-copy="sudo i2cdetect -y -r 1">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">Komanda</div><pre><code>sudo i2cdetect -y -r 1</code></pre></div>
+<p class="note">Ako je ADS1115 pravilno povezan, u tabeli treba pisati <strong>48</strong>.</p>
+</div>
+<div class="cell">
+<div class="cell-head"><p class="cell-title">2.1 Pokreni prikupljanje podataka s accelerometrom</p><button class="copy" data-copy="NODE_OPTIONS=&quot;--require=$HOME/.ei-structured-clone.js&quot; edge-impulse-linux --clean --disable-camera --disable-microphone --verbose">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">Komanda</div><pre><code>NODE_OPTIONS=&quot;--require=$HOME/.ei-structured-clone.js&quot; edge-impulse-linux --clean --disable-camera --disable-microphone --verbose</code></pre></div>
+<p class="note">Koristi kada je ADS1115/ADXL335 spojen i želiš skupljati samo njegove podatke.</p>
+</div>
+</section>
+
+<section class="section">
+<h2>3 Edge Impulse - mikrofon</h2>
+<p class="section-intro">Povezuje USB mikrofon s projektom za snimanje audio podataka.</p>
+<div class="cell">
+<div class="cell-head"><p class="cell-title">3.0 Pokreni prikupljanje podataka s mikrofonom</p><button class="copy" data-copy="NODE_OPTIONS=&quot;--require=$HOME/.ei-structured-clone.js&quot; edge-impulse-linux --clean --verbose">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">Komanda</div><pre><code>NODE_OPTIONS=&quot;--require=$HOME/.ei-structured-clone.js&quot; edge-impulse-linux --clean --verbose</code></pre></div>
+<p class="note">Pri pokretanju odaberi USB mikrofon u listi uređaja.</p>
+</div>
+<h3>Provjera zvuka</h3>
+<p class="section-intro">Prvo provjeri koji je broj USB mikrofona, zatim snimi pet sekundi i pusti snimak preko MAX98357 zvučnika.</p>
+<div class="cell">
+<div class="cell-head"><p class="cell-title">3.1 Lista audio ulaza</p><button class="copy" data-copy="arecord -l">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">In&nbsp;[7]:</div><pre><code>arecord -l</code></pre></div>
+<p class="note">USB mikrofon je trenutno <code>plughw:2,0</code>.</p>
+</div>
+<div class="cell">
+<div class="cell-head"><p class="cell-title">3.2 Snimi pet sekundi</p><button class="copy" data-copy="arecord -D plughw:2,0 -r 16000 -f S16_LE -c 1 -d 5 /home/pc/usb-snimak.wav">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">In&nbsp;[8]:</div><pre><code>arecord -D plughw:2,0 -r 16000 -f S16_LE -c 1 -d 5 /home/pc/usb-snimak.wav</code></pre></div>
+</div>
+<div class="cell">
+<div class="cell-head"><p class="cell-title">3.3 Pretvori snimak u stereo</p><button class="copy" data-copy="sox /home/pc/usb-snimak.wav /home/pc/usb-snimak-stereo.wav remix 1 1">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">In&nbsp;[9]:</div><pre><code>sox /home/pc/usb-snimak.wav /home/pc/usb-snimak-stereo.wav remix 1 1</code></pre></div>
+</div>
+<div class="cell">
+<div class="cell-head"><p class="cell-title">3.4 Pusti snimak kroz MAX98357 zvučnik</p><button class="copy" data-copy="aplay -D hw:1,0 /home/pc/usb-snimak-stereo.wav">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">In&nbsp;[10]:</div><pre><code>aplay -D hw:1,0 /home/pc/usb-snimak-stereo.wav</code></pre></div>
+</div>
+<div class="cell">
+<div class="cell-head"><p class="cell-title">3.5 Postavi MAX98357 kao zadani izlaz</p><button class="copy" data-copy="pactl set-default-sink max98357">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">In&nbsp;[11]:</div><pre><code>pactl set-default-sink max98357</code></pre></div>
+<p class="note">Ovo pokreni ako Chrome ili Edge Impulse ne šalje zvuk na spojeni zvučnik.</p>
+</div>
+</section>
+
+<section class="section">
+<h2>5 Edge Impulse model i LED lampice</h2>
+<p class="section-intro">Prva komanda ponovo bira projekt i USB mikrofon. Druga koristi taj odabrani model i šalje prepoznavanje lokalnom C++ programu za lampice.</p>
+<div class="cell">
+<div class="cell-head"><p class="cell-title">5.0 Odaberi projekt i mikrofon</p><button class="copy" data-copy="NODE_OPTIONS=&quot;--require=$HOME/.ei-structured-clone.js&quot; edge-impulse-linux-runner --clean">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">In&nbsp;[15]:</div><pre><code>NODE_OPTIONS=&quot;--require=$HOME/.ei-structured-clone.js&quot; edge-impulse-linux-runner --clean</code></pre></div>
+<p class="note">Pokreni samo kada mijenjaš Edge Impulse projekt ili mikrofon. Završi ga sa <span class="key">Ctrl</span> + <span class="key">C</span> nakon što potvrdiš da model radi.</p>
+</div>
+<div class="cell">
+<div class="cell-head"><p class="cell-title">5.1 Runner sa programom za LED lampice</p><button class="copy" data-copy="NODE_OPTIONS=&quot;--require=$HOME/.ei-structured-clone.js&quot; edge-impulse-linux-runner 2>&amp;1 | sudo /home/pc/ei_led">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">In&nbsp;[16]:</div><pre><code>NODE_OPTIONS=&quot;--require=$HOME/.ei-structured-clone.js&quot; edge-impulse-linux-runner 2&gt;&amp;1 | sudo /home/pc/ei_led</code></pre></div>
+<p class="note">Program traži da pričaš 2 sekunde, ispiše tri rezultata i pali boju iz zadnjeg uzorka. Nakon toga pravi pauzu od 5 sekundi.</p>
+</div>
+</section>
+
+<section class="section">
+<h2>6 Pokretanje lokalnih LLM modela</h2>
+<p class="section-intro">Prvo pokreni <code>source</code> komandu, zatim izaberi mali ili veliki model. Izlaz je sa <span class="key">Ctrl</span> + <span class="key">C</span>.</p>
+<div class="cell">
+<div class="cell-head"><p class="cell-title">6.0 Učitaj Node/NVM okruženje</p><button class="copy" data-copy="source &quot;$HOME/.nvm/nvm.sh&quot;">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">Komanda</div><pre><code>source &quot;$HOME/.nvm/nvm.sh&quot;</code></pre></div>
+</div>
+<div class="grid">
+<div class="cell">
+<div class="cell-head"><p class="cell-title">6.1 Mali LLM - brzi Qwen 0.5B</p><button class="copy" data-copy="/home/pc/llm/llama.cpp/build-gcc9/bin/llama-cli -m /home/pc/llm/models/qwen2.5-0.5b-instruct-q4_k_m.gguf -c 512 -t 4 -n 128 -sys &quot;Odgovaraj kratko na bosanskom jeziku.&quot;">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">Komanda</div><pre><code>/home/pc/llm/llama.cpp/build-gcc9/bin/llama-cli -m /home/pc/llm/models/qwen2.5-0.5b-instruct-q4_k_m.gguf -c 512 -t 4 -n 128 -sys &quot;Odgovaraj kratko na bosanskom jeziku.&quot;</code></pre></div>
+</div>
+<div class="cell">
+<div class="cell-head"><p class="cell-title">6.2 Veliki LLM - bolji Qwen 3B</p><button class="copy" data-copy="/home/pc/llm/llama.cpp/build-gcc9/bin/llama-cli -m /home/pc/llm/models/qwen2.5-3b-instruct-q4_k_m.gguf -c 512 -t 4 -n 128 -sys &quot;Odgovaraj kratko na bosanskom jeziku.&quot;">Kopiraj</button></div>
+<div class="code-wrap"><div class="prompt">Komanda</div><pre><code>/home/pc/llm/llama.cpp/build-gcc9/bin/llama-cli -m /home/pc/llm/models/qwen2.5-3b-instruct-q4_k_m.gguf -c 512 -t 4 -n 128 -sys &quot;Odgovaraj kratko na bosanskom jeziku.&quot;</code></pre></div>
+</div>
+</div>
+</section>
+
+<footer>Jetson Nano B01 · JetPack 4.6.1 · Ubuntu 18.04.6 · Edge Impulse</footer>
+</main>
+<script>
+document.querySelectorAll('.copy').forEach(function(button) {
+button.addEventListener('click', function() {
+var command = button.getAttribute('data-copy');
+navigator.clipboard.writeText(command).then(function() {
+var oldText = button.textContent;
+button.textContent = 'Kopirano';
+setTimeout(function() { button.textContent = oldText; }, 1400);
+}).catch(function() {
+button.textContent = 'Oznaci kod';
+});
+});
+});
+</script>
+</body>
+</html>
