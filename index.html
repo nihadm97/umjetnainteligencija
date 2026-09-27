@@ -110,6 +110,24 @@ background: #232933;
 color: #d4dbe5;
 font-size: .94rem;
 }
+.wiring-figure {
+margin: 22px 0 28px;
+padding: 12px;
+border: 1px solid #485363;
+border-radius: 8px;
+background: rgba(8, 12, 17, .62);
+}
+.wiring-figure img {
+display: block;
+width: 100%;
+height: auto;
+border-radius: 4px;
+}
+.wiring-figure figcaption {
+padding: 10px 3px 0;
+color: var(--muted);
+font-size: .92rem;
+}
 .key {
 display: inline-block;
 padding: 1px 6px;
@@ -174,6 +192,10 @@ edge-impulse-linux --disable-microphone --clean --verbose</code></pre></div>
 <section class="section">
 <h2>2 Edge Impulse - accelerometer</h2>
 <p class="section-intro">Prije pokretanja provjeri da su ADS1115 i ADXL335 fizički povezani žicama kao na shemi.</p>
+<figure class="wiring-figure">
+<img src="accelerometer-wiring.png" alt="Shema povezivanja Jetson Nano, ADS1115 i ADXL335 accelerometra">
+<figcaption>Shema povezivanja ADS1115 i ADXL335 accelerometra na Jetson Nano.</figcaption>
+</figure>
 <div class="cell">
 <div class="cell-head"><p class="cell-title">2.0 Provjera ADS1115 preko I2C</p><button class="copy" data-copy="sudo i2cdetect -y -r 1">Kopiraj</button></div>
 <div class="code-wrap"><div class="prompt">Komanda</div><pre><code>sudo i2cdetect -y -r 1</code></pre></div>
@@ -223,6 +245,10 @@ edge-impulse-linux --disable-microphone --clean --verbose</code></pre></div>
 <section class="section">
 <h2>4 Edge Impulse model i LED lampice</h2>
 <p class="section-intro">Prva komanda ponovo bira projekt i USB mikrofon. Druga koristi taj odabrani model i šalje prepoznavanje lokalnom C++ programu za lampice.</p>
+<figure class="wiring-figure">
+<img src="speaker-lampice-wiring.png" alt="Shema povezivanja MAX98357 zvučnika i plave žute crvene LED lampice na Jetson Nano">
+<figcaption>Shema povezivanja MAX98357 zvučnika te plave, žute i crvene LED lampice na Jetson Nano.</figcaption>
+</figure>
 <div class="cell">
 <div class="cell-head"><p class="cell-title">4.0 Odaberi projekt i mikrofon</p><button class="copy" data-copy="NODE_OPTIONS=&quot;--require=$HOME/.ei-structured-clone.js&quot; edge-impulse-linux-runner --clean">Kopiraj</button></div>
 <div class="code-wrap"><div class="prompt">In&nbsp;[15]:</div><pre><code>NODE_OPTIONS=&quot;--require=$HOME/.ei-structured-clone.js&quot; edge-impulse-linux-runner --clean</code></pre></div>
